@@ -127,14 +127,22 @@ namespace dnpatch.script
                         for (int i = 0; i < instructions.Count; i++)
                         {
                             var instruction = instructions[i];
-                            if (instruction["opcode"] != null && instruction["operand"] != null)
+                            if (instruction["opcode"] != null && instruction["operand"] != null) {
+                                var operand = instruction.Last.Last;
+                                if(operand.Type == JTokenType.Float) {
+                                target.Instructions[i] =
+                                    Instruction.Create((OpCode)GetInstructionField(instruction.First.First.ToString()).GetValue(this),
+                                        instruction.Last.Last.Value<float>());
+                                } else {
                                 target.Instructions[i] =
                                     Instruction.Create((OpCode)GetInstructionField(instruction.First.First.ToString()).GetValue(this),
                                         instruction.Last.Last.Value<dynamic>());
-                            else
+                                }
+                            } else {
                                 target.Instructions[i] =
                                     Instruction.Create(
                                         (OpCode)GetInstructionField(instruction.First.First.ToString()).GetValue(this));
+                            }
                         }
                     }
                 }
