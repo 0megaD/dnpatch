@@ -126,7 +126,7 @@ namespace dnpatch
                 classPath = classPath.Remove(0, 1);
             foreach (var module in _module.Assembly.Modules)
             {
-                foreach (var type in _module.Types)
+                foreach (var type in module.Types)
                 {
                     if (type.FullName == classPath)
                     {
@@ -242,6 +242,7 @@ namespace dnpatch
                 File.Delete(_file);
             }
             File.Move(_file + ".tmp", _file);
+            _module.Dispose();
         }
 
         public Target[] FindInstructionsByOperand(string[] operand)

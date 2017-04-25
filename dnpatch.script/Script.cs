@@ -19,12 +19,18 @@ namespace dnpatch.script
         private readonly Dictionary<string, Target> _targets = new Dictionary<string, Target>();        // Target
         private string _optional;                                                                       // Optional arguments
 
-        public Script(string path)
+        public Script(string path) : this(path, 0)
+        {
+
+        }
+
+        public Script(string path, int index)
         {
             _scriptFile = path;
             _script = JObject.Parse(File.ReadAllText(path));
             BuildTarget();
-            _patcher = new Patcher(_script.GetValue("target").ToString());
+            if(index <= 0) _patcher = new Patcher(_script.GetValue("target") + ".bak");
+            else _patcher = new Patcher(_script.GetValue("target").ToString() + index);
         }
 
         public void Patch()
