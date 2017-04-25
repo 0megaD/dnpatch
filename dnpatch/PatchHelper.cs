@@ -213,6 +213,7 @@ namespace dnpatch
                 });
             else
                 _module.Write(name);
+            _module.Dispose();
         }
 
         public  void Save(bool backup)
